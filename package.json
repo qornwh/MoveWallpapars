@@ -1,6 +1,6 @@
 {
   "name": "move-wallpapers",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "description": "Floating photo wallpaper slideshow for Windows desktop (Tauri + React + Rust)",
   "author": "qornwh",
   "license": "MIT",
