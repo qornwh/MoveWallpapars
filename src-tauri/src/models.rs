@@ -33,6 +33,10 @@ pub struct DisplayInfo {
 pub struct MonitorConfig {
     #[serde(default)]
     pub folder: Option<String>,
+    /// Explicit image list. When non-empty it is used instead of `folder`,
+    /// in the order given.
+    #[serde(default)]
+    pub files: Option<Vec<String>>,
     #[serde(default)]
     pub region: Option<Region>,
 }

@@ -25,12 +25,15 @@ npm run tauri dev      # 개발 모드 (핫리로드)
 npm run tauri build    # 릴리스 빌드 (NSIS 설치 파일)
 ```
 
-아이콘을 다시 생성하려면:
+아이콘 원본은 `src-tauri/icons/source.svg`(앱)와 `tray-source.svg`(트레이용 단순 버전)이다.
+수정 후 다시 생성하려면:
 
 ```bash
-node scripts/gen-icon.mjs
-npx tauri icon src-tauri/icons/source.png
+npx tauri icon src-tauri/icons/source.svg
 ```
+
+트레이 아이콘은 `tray-source.svg`를 같은 명령으로 임시 폴더(`-o`)에 뽑은 뒤
+`32x32.png`를 `src-tauri/icons/tray.png`로 복사한다.
 
 ## 프로젝트 구조
 

@@ -1,6 +1,6 @@
 use crate::config::save_config;
 use crate::display::get_displays;
-use crate::images::{list_images, shuffle};
+use crate::images::{filter_images, list_images, shuffle};
 use crate::models::{Config, DisplayInfo, OverlayConfig, Region, Status};
 use crate::state::AppState;
 use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
@@ -139,12 +139,16 @@ pub fn start_overlays(app: &AppHandle, cfg: &Config) -> bool {
                 println!("[start] display {} has no config, skip", d.id);
                 continue;
             };
-            let Some(folder) = &m.folder else {
-                println!("[start] display {} has no folder, skip", d.id);
-                continue;
+            // An explicit file list wins over the folder.
+            let mut images = match (&m.files, &m.folder) {
+                (Some(files), _) if !files.is_empty() => filter_images(files),
+                (_, Some(folder)) => list_images(folder),
+                _ => {
+                    println!("[start] display {} has no source, skip", d.id);
+                    continue;
+                }
             };
-            let mut images = list_images(folder);
-            println!("[start] display {} folder={} images={}", d.id, folder, images.len());
+            println!("[start] display {} images={}", d.id, images.len());
             if images.is_empty() {
                 continue;
             }

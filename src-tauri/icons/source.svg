@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="1024" height="1024">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3c4"/>
+      <stop offset="1" stop-color="#fbbc04"/>
+    </linearGradient>
+    <clipPath id="screen"><rect x="19" y="25" width="90" height="60" rx="6"/></clipPath>
+    <clipPath id="f1"><rect x="22" y="45" width="26" height="20" rx="2.5"/></clipPath>
+    <clipPath id="f2"><rect x="51" y="45" width="26" height="20" rx="2.5"/></clipPath>
+    <clipPath id="f3"><rect x="80" y="45" width="26" height="20" rx="2.5"/></clipPath>
+  </defs>
+
+  <!-- Black tile with a thin white outline -->
+  <rect x="1.5" y="1.5" width="125" height="125" rx="27" fill="#121212" stroke="#ffffff" stroke-width="2.5"/>
+
+  <!-- Monitor -->
+  <rect x="54" y="88" width="20" height="14" fill="#333333"/>
+  <rect x="40" y="101" width="48" height="7" rx="3.5" fill="#444444"/>
+  <rect x="13" y="19" width="102" height="72" rx="11" fill="#2c2c2c"/>
+
+  <!-- Screen with a three-frame sunrise film strip -->
+  <g clip-path="url(#screen)">
+    <rect x="19" y="25" width="90" height="60" fill="#171203"/>
+    <rect x="19" y="36" width="90" height="38" fill="#2a2a2a"/>
+    <g fill="#fdd663" fill-opacity=".8">
+      <rect x="22" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="31" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="40" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="49" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="58" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="67" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="76" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="85" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="94" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="103" y="38.5" width="5" height="3.6" rx="1"/>
+      <rect x="22" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="31" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="40" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="49" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="58" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="67" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="76" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="85" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="94" y="68" width="5" height="3.6" rx="1"/>
+      <rect x="103" y="68" width="5" height="3.6" rx="1"/>
+    </g>
+    <g clip-path="url(#f1)">
+      <rect x="22" y="45" width="26" height="20" fill="#3a2c06"/>
+      <circle cx="35" cy="62" r="6" fill="url(#sun)"/>
+      <rect x="22" y="60" width="26" height="5" fill="#171203"/>
+    </g>
+    <g clip-path="url(#f2)">
+      <rect x="51" y="45" width="26" height="20" fill="#8a6508"/>
+      <circle cx="64" cy="57.5" r="6" fill="url(#sun)"/>
+      <rect x="51" y="60" width="26" height="5" fill="#171203"/>
+    </g>
+    <g clip-path="url(#f3)">
+      <rect x="80" y="45" width="26" height="20" fill="#f9ab00"/>
+      <circle cx="93" cy="52" r="6" fill="#fff3c4"/>
+      <rect x="80" y="60" width="26" height="5" fill="#171203"/>
+    </g>
+  </g>
+</svg>

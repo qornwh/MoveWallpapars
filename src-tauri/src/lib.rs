@@ -34,7 +34,10 @@ fn handle_tray(app: &AppHandle, id: &str) {
                 let last = state.inner.lock().unwrap().last_config.clone();
                 last.unwrap_or_else(|| load_config(app))
             };
-            if cfg.monitors.values().any(|m| m.folder.is_some()) {
+            let has_source = |m: &models::MonitorConfig| {
+                m.folder.is_some() || m.files.as_ref().is_some_and(|f| !f.is_empty())
+            };
+            if cfg.monitors.values().any(has_source) {
                 // Off the main thread so window creation can marshal to the event loop.
                 let app = app.clone();
                 std::thread::spawn(move || {
@@ -78,10 +81,8 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
     ];
     let menu = Menu::with_items(app, &items)?;
 
-    let icon = app
-        .default_window_icon()
-        .cloned()
-        .expect("bundle icon missing");
+    // The tray uses a simplified mark that stays legible at 16px.
+    let icon = tauri::image::Image::from_bytes(include_bytes!("../icons/tray.png"))?;
 
     TrayIconBuilder::with_id("main")
         .icon(icon)
@@ -115,6 +116,8 @@ pub fn run() {
             commands::count_images,
             commands::get_overlay_config,
             commands::pick_folder,
+            commands::pick_files,
+            commands::count_files,
             commands::pick_region,
             commands::region_picked,
             commands::start,

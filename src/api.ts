@@ -18,6 +18,8 @@ export const api = {
   getStatus: () => invoke<Status>("get_status"),
   pickFolder: () => invoke<string | null>("pick_folder"),
   countImages: (folder: string) => invoke<number>("count_images", { folder }),
+  pickFiles: () => invoke<string[]>("pick_files"),
+  countFiles: (files: string[]) => invoke<number>("count_files", { files }),
   pickRegion: (displayId: string) =>
     invoke<Region | null>("pick_region", { displayId }),
   regionPicked: (region: Region | null) =>

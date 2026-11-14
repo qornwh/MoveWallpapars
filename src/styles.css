@@ -1,154 +1,327 @@
 * { box-sizing: border-box; }
 
+/* ===== Material-style design tokens (always dark, yellow accent) ===== */
+:root {
+  --bg: #0f0f0f;
+  --surface: #1b1b1a;
+  --surface-dim: #272623;
+  --on-surface: #ece9e1;
+  --on-surface-variant: #b3ad9e;
+  --primary: #fdd663;
+  --on-primary: #2a2000;
+  --primary-container: #4a3b08;
+  --on-primary-container: #ffe59a;
+  --outline: #8c8676;
+  --outline-variant: #3a3832;
+  --success: #81c995;
+  --error: #f28b82;
+  --state-hover: rgba(253, 214, 99, .1);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 3px 1px rgba(0, 0, 0, .2);
+  --radius-card: 16px;
+  --radius-field: 8px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
-  color: #e0e0e0;
-  font-family: -apple-system, "Segoe UI", Roboto, "Malgun Gothic", sans-serif;
+  color: var(--on-surface);
+  font-family: "Google Sans", Roboto, "Segoe UI", "Malgun Gothic", sans-serif;
   font-size: 14px;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Control window has the dark chrome; overlay/picker windows stay bare. */
+/* Control window gets the themed surface; overlay/picker windows stay bare. */
 html[data-window="control"], html[data-window="control"] body {
-  background: #1a1a1a;
+  background: var(--bg);
+  color-scheme: dark;
 }
 
 /* ===== Control panel ===== */
 
-.control-root { padding: 24px; min-height: 100vh; }
+.control-root {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 28px 24px 32px;
+  min-height: 100vh;
+}
 
-header { margin-bottom: 24px; }
-header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; }
-header .sub { margin: 0; color: #888; font-size: 13px; line-height: 1.5; }
+header.appbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.brand-icon {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  display: grid;
+  place-items: center;
+}
+.brand-icon svg { width: 26px; height: 26px; }
+header.appbar h1 {
+  margin: 2px 0 4px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+header.appbar .sub {
+  margin: 0;
+  color: var(--on-surface-variant);
+  font-size: 13px;
+  line-height: 1.55;
+}
 
 h2 {
-  font-size: 12px;
-  margin: 0 0 12px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
+  margin: 0 0 10px 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
 }
 
 section { margin-bottom: 20px; }
 
-.settings {
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  flex-wrap: wrap;
-  background: #252525;
-  padding: 16px 20px;
-  border-radius: 8px;
+/* --- Cards --- */
+.settings,
+.monitor-card,
+.status {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-1);
 }
 
+.settings {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+}
 .settings label {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-size: 14px;
-  color: #ccc;
+  color: var(--on-surface);
+  cursor: pointer;
+  user-select: none;
 }
 
+/* --- Select / number fields (outlined) --- */
 .settings select,
-.settings input[type=number] {
-  background: #1a1a1a;
-  color: #e0e0e0;
-  border: 1px solid #3a3a3a;
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-size: 14px;
+.region-fields input[type=number] {
+  background: transparent;
+  color: var(--on-surface);
+  border: 1px solid var(--outline);
+  border-radius: var(--radius-field);
+  padding: 8px 12px;
+  font: inherit;
   outline: none;
+  transition: border-color .15s, box-shadow .15s;
 }
+.settings select { min-width: 96px; cursor: pointer; }
+.settings select option { background: var(--surface); color: var(--on-surface); }
+.settings select:hover,
+.region-fields input[type=number]:hover { border-color: var(--on-surface); }
 .settings select:focus,
-.settings input[type=number]:focus { border-color: #4a90e2; }
-.settings input[type=number] { width: 100px; }
-
-.monitor-card {
-  background: #252525;
-  padding: 16px 20px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+.region-fields input[type=number]:focus {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
 }
+
+/* --- Switch (every checkbox in the control panel) --- */
+.control-root input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  position: relative;
+  width: 52px;
+  height: 32px;
+  margin: 0;
+  border-radius: 16px;
+  border: 2px solid var(--outline);
+  background: var(--surface-dim);
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.control-root input[type=checkbox]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--outline);
+  transform: translateY(-50%);
+  transition: left .2s, width .2s, height .2s, background .2s;
+}
+.control-root input[type=checkbox]:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.control-root input[type=checkbox]:checked::before {
+  left: 22px;
+  width: 24px;
+  height: 24px;
+  background: var(--on-primary);
+}
+.control-root input[type=checkbox]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* --- Buttons --- */
+button {
+  font: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  height: 40px;
+  padding: 0 24px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, box-shadow .15s, opacity .15s;
+}
+button:hover { background: var(--state-hover); }
+button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+button:disabled { opacity: .38; cursor: default; background: transparent; box-shadow: none; }
+
+button.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: transparent;
+}
+button.primary:hover { background: var(--primary); box-shadow: var(--shadow-1); filter: brightness(1.08); }
+
+button.tonal,
+.btn-pick {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: transparent;
+}
+button.tonal:hover,
+.btn-pick:hover { background: var(--primary-container); box-shadow: var(--shadow-1); }
+
+.btn-clear,
+.btn-drag {
+  height: 36px;
+  padding: 0 14px;
+  border-color: transparent;
+}
+.btn-clear { color: var(--on-surface-variant); }
+
+.controls { display: flex; gap: 8px; align-items: center; }
+
+/* --- Monitor cards --- */
+.monitor-card { padding: 18px 24px; margin-bottom: 12px; }
 .m-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  min-height: 36px;
+  margin-bottom: 10px;
 }
-.m-title { font-weight: 600; font-size: 15px; }
+.m-title { font-weight: 500; font-size: 16px; }
 .primary-tag {
   display: inline-block;
-  font-size: 10px;
-  padding: 2px 7px;
-  background: #4a90e2;
-  color: white;
-  border-radius: 10px;
-  margin-left: 6px;
+  margin-left: 8px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 8px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
   vertical-align: middle;
-  letter-spacing: .3px;
 }
-.m-body {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+.m-body { display: flex; align-items: center; gap: 16px; }
 .folder-info { flex: 1; min-width: 0; }
 .folder-path {
-  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-  font-size: 12px;
-  color: #ccc;
-  background: #1a1a1a;
-  padding: 7px 11px;
-  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: "Roboto Mono", "Cascadia Code", Consolas, monospace;
+  font-size: 12.5px;
+  color: var(--on-surface);
+  background: var(--surface-dim);
+  border-radius: var(--radius-field);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.folder-path.empty { color: #666; font-style: italic; font-family: inherit; }
-.img-count { font-size: 12px; color: #888; margin-top: 5px; padding-left: 2px; }
-
-button {
-  background: #3a3a3a;
-  color: #e0e0e0;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background .15s;
+.folder-path.empty {
   font-family: inherit;
+  color: var(--on-surface-variant);
 }
-button:hover { background: #4a4a4a; }
-button:active { background: #303030; }
-button.primary { background: #4a90e2; color: white; }
-button.primary:hover { background: #5aa0f2; }
-button:disabled { opacity: .5; cursor: default; }
-
-.btn-clear {
-  background: transparent;
-  color: #888;
+.img-count {
+  margin-top: 6px;
+  padding-left: 2px;
   font-size: 12px;
-  padding: 4px 10px;
+  color: var(--on-surface-variant);
 }
-.btn-clear:hover { background: #3a3a3a; color: #ccc; }
 
-.controls { display: flex; gap: 8px; }
+.m-sources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.m-sources button { height: 36px; padding: 0 16px; }
 
-.status {
-  background: #252525;
-  padding: 12px 18px;
-  border-radius: 6px;
+/* --- Dialog (image list editor) --- */
+.dialog-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .4);
+}
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(720px, 100%);
+  max-height: 100%;
+  padding: 24px;
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .3);
+}
+.dialog h3 { margin: 0 0 8px; font-size: 20px; font-weight: 500; }
+.dialog-help {
+  margin: 0 0 14px;
   font-size: 13px;
-  color: #bbb;
-  border-left: 3px solid #4a90e2;
+  line-height: 1.55;
+  color: var(--on-surface-variant);
+}
+.dialog textarea {
+  flex: 1;
+  min-height: 280px;
+  padding: 12px 14px;
+  resize: none;
+  font: 12.5px/1.7 "Roboto Mono", "Cascadia Code", Consolas, monospace;
+  color: var(--on-surface);
+  background: var(--surface-dim);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  outline: none;
+}
+.dialog textarea:focus {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+.dialog-actions { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+.dialog-count {
+  flex: 1;
+  padding-left: 8px;
+  font-size: 12px;
+  color: var(--on-surface-variant);
 }
 
 .m-region {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #333;
-  font-size: 13px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--outline-variant);
 }
 .region-head {
   display: flex;
@@ -159,43 +332,56 @@ button:disabled { opacity: .5; cursor: default; }
 .m-region label.row {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: #ccc;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
 }
-.btn-drag {
-  background: #2d5a8a;
-  color: #e0e0e0;
-  font-size: 12px;
-  padding: 6px 12px;
-}
-.btn-drag:hover { background: #3d6a9a; }
 .region-fields {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 14px;
 }
 .region-fields label {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-size: 12px;
-  color: #888;
+  color: var(--on-surface-variant);
 }
 .region-fields input[type=number] {
-  background: #1a1a1a;
-  color: #e0e0e0;
-  border: 1px solid #3a3a3a;
-  border-radius: 4px;
-  padding: 6px 8px;
-  font-size: 13px;
-  outline: none;
   width: 100%;
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-size: 13px;
 }
-.region-fields input[type=number]:focus { border-color: #4a90e2; }
+
+/* --- Status --- */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+.status-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--outline);
+}
+.status.running { color: var(--on-surface); }
+.status.running .status-dot {
+  background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 20%, transparent);
+}
+
+@media (max-width: 560px) {
+  .m-body { flex-direction: column; align-items: stretch; }
+  .region-head { flex-direction: column; align-items: flex-start; }
+  .region-fields { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* ===== Overlay window (slideshow) ===== */
 

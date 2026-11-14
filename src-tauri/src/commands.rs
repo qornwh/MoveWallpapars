@@ -1,6 +1,6 @@
 use crate::config::load_config;
 use crate::display::get_displays as list_displays;
-use crate::images::list_images;
+use crate::images::{filter_images, list_images, IMAGE_EXTS};
 use crate::models::{Config, DisplayInfo, OverlayConfig, Region, StartPayload, StartResult, Status};
 use crate::overlay::{build_picker, current_status, notify_status, start_overlays, stop_overlays};
 use crate::state::AppState;
@@ -43,6 +43,32 @@ pub async fn pick_folder(app: AppHandle) -> Option<String> {
     });
     let picked = rx.await.ok().flatten();
     picked.and_then(|fp| fp.as_path().map(|p| p.to_string_lossy().into_owned()))
+}
+
+/// Multi-select image files for a custom list.
+#[tauri::command]
+pub async fn pick_files(app: AppHandle) -> Vec<String> {
+    use tauri_plugin_dialog::DialogExt;
+    let (tx, rx) = oneshot::channel();
+    app.dialog()
+        .file()
+        .add_filter("이미지", IMAGE_EXTS)
+        .pick_files(move |paths| {
+            let _ = tx.send(paths);
+        });
+    rx.await
+        .ok()
+        .flatten()
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|fp| fp.as_path().map(|p| p.to_string_lossy().into_owned()))
+        .collect()
+}
+
+/// How many entries of a custom list exist and are usable images.
+#[tauri::command]
+pub fn count_files(files: Vec<String>) -> usize {
+    filter_images(&files).len()
 }
 
 #[tauri::command]

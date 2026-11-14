@@ -22,6 +22,8 @@ export interface DisplayInfo {
 
 export interface MonitorConfig {
   folder: string | null;
+  /** Explicit image list; when non-empty it replaces `folder`. */
+  files?: string[] | null;
   region: Region | null;
 }
 

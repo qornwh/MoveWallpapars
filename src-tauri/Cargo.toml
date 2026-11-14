@@ -1,6 +1,6 @@
 [package]
 name = "move-wallpapers"
-version = "0.1.0"
+version = "0.2.0"
 description = "Floating photo wallpaper slideshow for Windows desktop"
 authors = ["qornwh"]
 edition = "2021"
@@ -14,7 +14,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = ["tray-icon", "protocol-asset"] }
+tauri = { version = "2", features = ["tray-icon", "protocol-asset", "image-png"] }
 tauri-plugin-dialog = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
