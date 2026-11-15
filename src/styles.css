@@ -355,6 +355,22 @@ button.tonal:hover,
   font-size: 13px;
 }
 
+/* --- Notice (backend problems) --- */
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--error);
+  background: var(--surface);
+  border: 1px solid var(--error);
+  border-radius: var(--radius-card);
+}
+.notice span { flex: 1; }
+.notice button { height: 32px; padding: 0 14px; border-color: transparent; color: var(--error); }
+
 /* --- Status --- */
 .status {
   display: flex;

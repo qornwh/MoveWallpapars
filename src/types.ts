@@ -42,6 +42,8 @@ export interface StartPayload {
 export interface StartResult {
   ok: boolean;
   active: boolean;
+  /** At least one overlay could not be attached to the desktop. */
+  attachFailed: boolean;
 }
 
 export interface Status {

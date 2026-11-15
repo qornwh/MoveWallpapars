@@ -75,6 +75,9 @@ pub struct StartPayload {
 pub struct StartResult {
     pub ok: bool,
     pub active: bool,
+    /// At least one overlay could not be attached to the desktop.
+    #[serde(rename = "attachFailed")]
+    pub attach_failed: bool,
 }
 
 #[derive(Debug, Clone, Serialize)]

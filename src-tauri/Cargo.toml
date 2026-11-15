@@ -1,6 +1,6 @@
 [package]
 name = "move-wallpapers"
-version = "0.2.0"
+version = "0.2.1"
 description = "Floating photo wallpaper slideshow for Windows desktop"
 authors = ["qornwh"]
 edition = "2021"

@@ -2,7 +2,9 @@ use crate::config::load_config;
 use crate::display::get_displays as list_displays;
 use crate::images::{filter_images, list_images, IMAGE_EXTS};
 use crate::models::{Config, DisplayInfo, OverlayConfig, Region, StartPayload, StartResult, Status};
-use crate::overlay::{build_picker, current_status, notify_status, start_overlays, stop_overlays};
+use crate::overlay::{build_picker, current_status, notify_status, report_attach_failure, start_overlays,
+    stop_overlays,
+};
 use crate::state::AppState;
 use serde_json::{json, Value};
 use tauri::{AppHandle, Emitter, Manager, State};
@@ -123,9 +125,16 @@ pub async fn start(app: AppHandle, payload: StartPayload) -> StartResult {
         shuffle: payload.shuffle,
         monitors: payload.monitors,
     };
-    let active = start_overlays(&app, &cfg);
+    let outcome = start_overlays(&app, &cfg);
+    if outcome.attach_failed {
+        report_attach_failure(&app);
+    }
     notify_status(&app);
-    StartResult { ok: true, active }
+    StartResult {
+        ok: true,
+        active: outcome.active,
+        attach_failed: outcome.attach_failed,
+    }
 }
 
 #[tauri::command]

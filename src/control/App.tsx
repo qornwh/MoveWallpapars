@@ -90,6 +90,8 @@ export default function ControlApp() {
   const countdownRef = useRef<number | null>(null);
 
   const [editingId, setEditingId] = useState<string | null>(null);
+  // Problems reported by the backend; kept apart from the status line, which the countdown rewrites.
+  const [warning, setWarning] = useState<string | null>(null);
 
   const refreshCount = useCallback(
     async (id: string, folder: string | null, files: string[] | null) => {
@@ -137,7 +139,7 @@ export default function ControlApp() {
     })();
 
     const unStatus = onStatus((s) => applyStatus(s));
-    const unError = onError((msg) => setStatusMsg(`오류: ${msg}`));
+    const unError = onError((msg) => setWarning(msg));
     return () => {
       unStatus.then((f) => f());
       unError.then((f) => f());
@@ -239,9 +241,10 @@ export default function ControlApp() {
       setStatusMsg("모니터 하나 이상에 폴더나 이미지 목록을 지정하세요.");
       return;
     }
+    setWarning(null);
     setStatusMsg("시작 중…");
     const res = await api.start({ intervalSec, shuffle, monitors });
-    if (!res.active) {
+    if (!res.active && !res.attachFailed) {
       setStatusMsg("표시할 이미지가 없습니다. 폴더나 목록의 경로를 확인하세요.");
     }
   };
@@ -394,6 +397,13 @@ export default function ControlApp() {
           즉시 다음
         </button>
       </section>
+
+      {warning && (
+        <section className="notice" role="alert">
+          <span>{warning}</span>
+          <button onClick={() => setWarning(null)}>닫기</button>
+        </section>
+      )}
 
       <section className={`status ${isRunning ? "running" : ""}`}>
         <span className="status-dot" />

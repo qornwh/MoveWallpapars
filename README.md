@@ -25,6 +25,13 @@ npm run tauri dev      # 개발 모드 (핫리로드)
 npm run tauri build    # 릴리스 빌드 (NSIS 설치 파일)
 ```
 
+Microsoft Store 제출용 MSIX는 릴리스 빌드 후 아래 스크립트로 만든다 (Windows SDK 필요).
+결과물은 `src-tauri/target/msix/`에 생긴다.
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/build-msix.ps1
+```
+
 아이콘 원본은 `src-tauri/icons/source.svg`(앱)와 `tray-source.svg`(트레이용 단순 버전)이다.
 수정 후 다시 생성하려면:
 

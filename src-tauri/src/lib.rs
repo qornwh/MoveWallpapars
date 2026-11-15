@@ -41,7 +41,9 @@ fn handle_tray(app: &AppHandle, id: &str) {
                 // Off the main thread so window creation can marshal to the event loop.
                 let app = app.clone();
                 std::thread::spawn(move || {
-                    start_overlays(&app, &cfg);
+                    if start_overlays(&app, &cfg).attach_failed {
+                        overlay::report_attach_failure(&app);
+                    }
                     notify_status(&app);
                 });
             } else {
@@ -127,6 +129,7 @@ pub fn run() {
         ])
         .setup(|app| {
             build_tray(app.handle())?;
+            overlay::spawn_watchdog(app.handle().clone());
             Ok(())
         })
         .on_window_event(|window, event| {
